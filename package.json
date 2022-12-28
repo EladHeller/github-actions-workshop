@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "check-types": "tsc",
     "eslint:test": "eslint \"**/*.[jt]s\" --max-warnings 0",
     "build": "rm -rf ./dist && webpack --mode=production",
     "start": "rm -rf ./dist && webpack serve --mode=development"
