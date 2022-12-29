@@ -3,6 +3,7 @@ export interface ToDoItem {
   title: string;
   description: string;
   completed: boolean;
+  isNew?: boolean;
 }
 
 export interface IToDoDataLayer {
