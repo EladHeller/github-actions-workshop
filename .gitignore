@@ -2,4 +2,4 @@
 /coverage
 /node_modules
 stats.json 
-summary.json
+*summary.json
