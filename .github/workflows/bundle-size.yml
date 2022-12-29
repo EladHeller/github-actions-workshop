@@ -2,6 +2,8 @@ name: bundle size
 permissions:
   statuses: write
   contents: read
+  issues: write
+  pull-requests: write
 on:
   pull_request:
     branches:
@@ -38,8 +40,10 @@ jobs:
         run: |
           npm run stats:build
           npm run stats:summary
+      - name: update github status
+        run: npm run update-github-status ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload bundler size results
+      - name: Upload bundle size results
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.sha }}-bundle-size

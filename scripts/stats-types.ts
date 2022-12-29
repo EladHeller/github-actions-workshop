@@ -1,3 +1,5 @@
+export type StatsSummary = Record<string, number>;
+
 /** Partial type of stats chunk */
 export type StatsChunk = {
   names: string[];
