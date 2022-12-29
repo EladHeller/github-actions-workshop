@@ -3,33 +3,11 @@ import * as prettyBytes from 'pretty-bytes';
 import { StatsSummary } from './stats-types';
 import getSummaryFromArtifacts from './getSummaryFromArtifacts';
 import sendRequest from './sendGithubRequest';
+import { deleteComment, getPrevIssue, parsePullRequestId } from './share';
 
 const token = process.argv[2];
 
 const COMMENT_START = '### Bundle Size Report';
-
-function parsePullRequestId(githubRef: string): string | undefined {
-  const result = /refs\/pull\/(\d+)\/merge/g.exec(githubRef);
-  if (!result) {
-    return undefined;
-  }
-  const [, pullRequestId] = result;
-  return pullRequestId;
-}
-
-async function getPrevIssue(prId: string) {
-  const res = await sendRequest(
-    `/repos/${process.env.GITHUB_REPOSITORY}/issues/${prId}/comments`,
-    'GET',
-  );
-
-  return res.find(({ body }: any) => body?.startsWith(COMMENT_START));
-}
-
-function deleteComment(commentId: number) {
-  const path = `/repos/${process.env.GITHUB_REPOSITORY}/issues/comments/${commentId}`;
-  return sendRequest(path, 'DELETE');
-}
 
 function getSizeDescription(current: number, base: number, name: string) {
   const prettyCurrent = prettyBytes.default(current);
@@ -56,11 +34,12 @@ function getCommentText(summary: StatsSummary, oldSummary?: StatsSummary) {
 
 async function setStatus(summary: StatsSummary, prId: string, oldSummary?: StatsSummary) {
   const body = getCommentText(summary, oldSummary);
-  const prevComment = await getPrevIssue(prId);
+  const prevComment = await getPrevIssue(prId, COMMENT_START);
   if (prevComment?.body === body) {
     console.log('Already updated.');
     return;
-  } if (prevComment) {
+  }
+  if (prevComment) {
     deleteComment(prevComment.id);
   }
   const path = `/repos/${process.env.GITHUB_REPOSITORY}/issues/${prId}/comments`;

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "check-types": "tsc",
+    "user-image": "tsx ./scripts/user-image.ts",
     "update-github-status": "tsx ./scripts/updateGithubStatus.ts",
     "eslint:test": "eslint \"**/*.[jt]s\" --max-warnings 0",
     "build": "rm -rf ./dist && webpack --mode=production",

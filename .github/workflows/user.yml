@@ -1,31 +1,30 @@
-name: bundle size
+name: user
+
 permissions:
   contents: read
   issues: write
   pull-requests: write
+
 on:
   pull_request:
     branches:
       - master
-  push:
-    branches:
-      - master
+
 jobs:
-  check-bundle-size:
+  user-image:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Cache node modules
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules-v1
         with:
-          # npm cache files are stored in `~/.npm` on Linux/MacOS
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
@@ -34,16 +33,5 @@ jobs:
 
       - name: Install modules
         run: npm ci
-
-      - name: Create stats
-        run: |
-          npm run stats:build
-          npm run stats:summary
-      - name: update github status
-        run: npm run update-github-status ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload bundle size results
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ github.sha }}-bundle-size
-          path: stats-summary.json
+      - name: User image
+        run: npm run user-image ${{ secrets.PRIVATE_GITHUB_TOKEN }}
