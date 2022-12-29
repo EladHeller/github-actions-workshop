@@ -6,6 +6,8 @@ extends:
   - plugin:import/typescript
   - "plugin:@typescript-eslint/eslint-recommended"
   - "plugin:@typescript-eslint/recommended"
+  - plugin:react/recommended
+  - plugin:react/jsx-runtime
 parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 12
@@ -17,6 +19,6 @@ plugins:
 rules: 
   '@typescript-eslint/type-annotation-spacing': [error, {before: true, after: true, overrides: {colon: {before: false, after: true}}}]
   '@typescript-eslint/member-delimiter-style': [error, {multiline: {delimiter: semi}}]
-  import/extensions: ['error', 'ignorePackages', {'ts': 'never'}]
+  import/extensions: ['error', 'ignorePackages', {'ts': 'never', 'tsx': 'never'}]
   no-unused-vars: off
   '@typescript-eslint/no-unused-vars': error
