@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { IToDoDataLayer, ToDoItem } from './types';
+import './ToDoApp.css';
+
+const imageUrl = IMAGE_URL;
+const headerColor = HEADER_COLOR;
 
 interface ToDoItemProps {
   toDoItem: ToDoItem;
@@ -7,6 +11,9 @@ interface ToDoItemProps {
   onDelete: (id: number) => void;
 }
 
+const headerStyle = {
+  backgroundColor: headerColor,
+};
 export function ToDoItemRow(props: ToDoItemProps) {
   const {
     toDoItem, onUpdated, onDelete,
@@ -60,39 +67,51 @@ export default function ToDoApp(props: { dataLayer: IToDoDataLayer }) {
   const [toDoList, setToDoList] = useState(dataLayer.getToDoList());
 
   return (
-    <div className='root'>
-      <table className='todo-list'>
-        <thead className='titles'>
-          <th className='title'>Title</th>
-          <th className='title'>Description</th>
-          <th className='title'>Completed</th>
-          <th className='title'>Actions</th>
-        </thead>
-        {toDoList.map((toDoItem) => (
-          <ToDoItemRow key={toDoItem.id} toDoItem={toDoItem} onDelete={(id) => {
-            dataLayer.deleteToDoItem(id);
-            setToDoList(dataLayer.getToDoList());
-          }}
-          onUpdated={(editedToDoItem) => {
-            if (toDoItem.isNew) {
-              dataLayer.addToDoItem(editedToDoItem);
-            } else {
-              dataLayer.updateToDoItem(editedToDoItem);
-            }
-            setToDoList(dataLayer.getToDoList());
-          }}/>
-        ))}
-      </table>
-      <button className='add' onClick={() => {
-        const toDoItem: ToDoItem = {
-          id: Date.now(),
-          title: '',
-          description: '',
-          completed: false,
-          isNew: true,
-        };
-        setToDoList([...toDoList, toDoItem]);
-      }}>Add</button>
-    </div>
+    <>
+      <header style={headerStyle}>
+        <img src={imageUrl} alt='logo' className='logo'/>
+        <h1>ToDo App</h1>
+      </header>
+      <main>
+        <div className='table-container'>
+          <table className='todo-list'>
+            <thead className='titles'>
+              <tr>
+                <th className='title'>Title</th>
+                <th className='title'>Description</th>
+                <th className='title'>Completed</th>
+                <th className='title'>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {toDoList.map((toDoItem) => (
+                <ToDoItemRow key={toDoItem.id} toDoItem={toDoItem} onDelete={(id) => {
+                  dataLayer.deleteToDoItem(id);
+                  setToDoList(dataLayer.getToDoList());
+                }}
+                onUpdated={(editedToDoItem) => {
+                  if (toDoItem.isNew) {
+                    dataLayer.addToDoItem(editedToDoItem);
+                  } else {
+                    dataLayer.updateToDoItem(editedToDoItem);
+                  }
+                  setToDoList(dataLayer.getToDoList());
+                }}/>
+              ))}
+            </tbody>
+          </table>
+          <button className='add' onClick={() => {
+            const toDoItem: ToDoItem = {
+              id: Date.now(),
+              title: '',
+              description: '',
+              completed: false,
+              isNew: true,
+            };
+            setToDoList([...toDoList, toDoItem]);
+          }}>Add</button>
+        </div>
+      </main>
+    </>
   );
 }
