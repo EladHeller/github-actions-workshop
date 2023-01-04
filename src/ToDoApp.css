@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+}
+
+.logo {
+  border-radius: 50%;
+  padding: 20px;
+  width: 200px;
+}
+
+header {
+  width: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+header > h1 {
+  margin: auto;
+}
+
+.table-container {
+  margin: auto;
+  width: fit-content;
+}

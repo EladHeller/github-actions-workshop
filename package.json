@@ -6,10 +6,11 @@
   "scripts": {
     "test": "jest",
     "check-types": "tsc",
-    "user-image": "tsx ./scripts/user-image.ts",
+    "user-image": "tsx ./scripts/addUserImageComment.ts",
     "update-github-status": "tsx ./scripts/updateGithubStatus.ts",
     "eslint:test": "eslint \"**/*.[jt]s\" --max-warnings 0",
     "build": "rm -rf ./dist && webpack --mode=production",
+    "params-for-build": "tsx ./scripts/addParamsToBuild.ts",
     "stats:build": "webpack --json=stats.json --mode production",
     "stats:summary": "tsx ./scripts/stats-summary.ts",
     "start": "rm -rf ./dist && webpack serve --mode=development"
@@ -29,6 +30,7 @@
     "@typescript-eslint/parser": "^5.47.1",
     "babel-jest": "^29.3.1",
     "babel-loader": "^9.1.0",
+    "css-loader": "^6.7.3",
     "eslint": "^8.30.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -37,6 +39,7 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1",
+    "style-loader": "^3.3.1",
     "tsx": "^3.12.1",
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",

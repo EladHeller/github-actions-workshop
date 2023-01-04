@@ -1,8 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = (_, configuration) => ({
-  mode: 'production',
+  mode: configuration.mode,
   entry: './src/index.tsx',
   resolve: {
     extensions: ['.ts', '.js', '.tsx'],
@@ -15,10 +16,21 @@ module.exports = (_, configuration) => ({
         use: 'babel-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+        exclude: /node_modules/,
+      },
     ],
   },
   plugins: [
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+    new webpack.DefinePlugin({
+      IMAGE_URL: JSON.stringify(configuration.env.image || 'https://i.giphy.com/media/1uPiL9Amv5zkk/giphy.webp'),
+      HEADER_COLOR: JSON.stringify(configuration.env.color || 'blue'),
+    }),
   ],
   devServer: configuration.mode === 'development' ? {
     static: {
