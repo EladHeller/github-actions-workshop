@@ -6,7 +6,7 @@ async function main() {
     throw new Error('No access token');
   }
   const user = await sendRequest('/user', 'GET');
-  process.env.USER_IMAGE = user.avatar_url;
+  process.stdout.write(user.avatar_url);
 }
 
 main().catch((e) => {
